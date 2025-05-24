@@ -1,13 +1,400 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Game Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Game Admin</h2>
+            </div>            <ul class="nav-links">
+                <li class="active" data-page="players"><i class="fas fa-users"></i> Players</li>
+                <li data-page="items"><i class="fas fa-gamepad"></i> Items</li>
+                <li data-page="stats"><i class="fas fa-chart-line"></i> Statistics</li>
+                <li><i class="fas fa-cog"></i> Settings</li>
+            </ul>
+            <div class="logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </div>
+        </nav>
+        
+        <main class="content">
+            <div class="header">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-info">
+                    <span>Admin User</span>
+                    <img src="https://via.placeholder.com/40" alt="Admin" class="avatar">
+                </div>
+            </div>
+
+            <div class="page" id="players-page">
+                <div class="page-header">
+                    <h1>Player Management</h1>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="players-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Level</th>
+                                <th>Join Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Sample player data -->
+                            <tr>
+                                <td>1</td>
+                                <td>player1</td>
+                                <td>player1@example.com</td>
+                                <td>42</td>
+                                <td>05/15/2025</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>gamer2022</td>
+                                <td>gamer2022@example.com</td>
+                                <td>36</td>
+                                <td>03/20/2025</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>epicplayer</td>
+                                <td>epicplayer@example.com</td>
+                                <td>78</td>
+                                <td>01/05/2025</td>
+                                <td><span class="status inactive">Suspended</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>gamemaster</td>
+                                <td>gamemaster@example.com</td>
+                                <td>65</td>
+                                <td>02/12/2025</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>proGamer99</td>
+                                <td>progamer99@example.com</td>
+                                <td>92</td>
+                                <td>04/03/2025</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <button class="page-btn" id="prev-page"><i class="fas fa-chevron-left"></i></button>
+                        <span class="page-number">1</span>
+                        <button class="page-btn" id="next-page"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>            <div class="page hidden" id="items-page">
+                <div class="page-header">
+                    <h1>Item Management</h1>
+                    <button id="add-item" class="btn-primary"><i class="fas fa-plus"></i> Add Item</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="items-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Item Name</th>
+                                <th>Category</th>
+                                <th>Rarity</th>
+                                <th>Value</th>
+                                <th>Owner ID</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Sample item data -->                            <tr>
+                                <td>101</td>
+                                <td>Luxury Pet Bed</td>
+                                <td>Furniture</td>
+                                <td><span class="rarity legendary">Legendary</span></td>
+                                <td>5000</td>
+                                <td>1</td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>102</td>
+                                <td>Automatic Feeder</td>
+                                <td>Equipment</td>
+                                <td><span class="rarity rare">Rare</span></td>
+                                <td>2500</td>
+                                <td>1</td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>103</td>
+                                <td>Premium Pet Food</td>
+                                <td>Consumable</td>
+                                <td><span class="rarity common">Common</span></td>
+                                <td>100</td>
+                                <td>2</td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>104</td>
+                                <td>Designer Pet Outfit</td>
+                                <td>Clothing</td>
+                                <td><span class="rarity epic">Epic</span></td>
+                                <td>3500</td>
+                                <td>3</td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>                            <tr>
+                                <td>105</td>
+                                <td>Interactive Pet Toy</td>
+                                <td>Toy</td>
+                                <td><span class="rarity rare">Rare</span></td>
+                                <td>1800</td>
+                                <td>4</td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>106</td>
+                                <td>Premium Grooming Kit</td>
+                                <td>Grooming</td>
+                                <td><span class="rarity uncommon">Uncommon</span></td>
+                                <td>1200</td>
+                                <td>5</td>
+                                <td>
+                                    <button class="btn-action view"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action edit"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <button class="page-btn" id="prev-page-items"><i class="fas fa-chevron-left"></i></button>
+                        <span class="page-number">1</span>
+                        <button class="page-btn" id="next-page-items"><i class="fas fa-chevron-right"></i></button>
+                    </div>                </div>
+            </div>            <div class="page hidden" id="stats-page">
+                <div class="page-header">
+                    <h1>Statistics Dashboard</h1>
+                    <button id="refresh-stats" class="btn-primary"><i class="fas fa-sync-alt"></i> Refresh Data</button>
+                </div>
+                <div class="stats-container">
+                    <div class="stats-row">
+                        <div class="stats-card">
+                            <div class="stats-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stats-info">
+                                <h3>Total Players</h3>
+                                <p id="total-players">5</p>
+                            </div>
+                            <div class="stats-chart">
+                                <canvas id="players-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="stats-card">
+                            <div class="stats-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <div class="stats-info">
+                                <h3>Total Items</h3>
+                                <p id="total-items">5</p>
+                            </div>
+                            <div class="stats-chart">
+                                <canvas id="items-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stats-card wide">
+                            <div class="stats-header">
+                                <h3>Active Players by Day</h3>
+                            </div>
+                            <div class="stats-info">
+                                <p>Current Active Players: <span id="active-players-count">4</span></p>
+                            </div>
+                            <div class="stats-chart-container">
+                                <canvas id="active-players-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stats-card wide">
+                            <div class="stats-header">
+                                <h3>Player Status Distribution</h3>
+                            </div>
+                            <div class="stats-chart-container">
+                                <canvas id="status-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>                    <div class="stats-row">
+                        <div class="stats-card wide">
+                            <div class="stats-header">
+                                <h3>Total Items Per Player</h3>
+                            </div>
+                            <div class="stats-chart-container">
+                                <canvas id="player-items-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stats-card wide">
+                            <div class="stats-header">
+                                <h3>Item Rarity Distribution</h3>
+                            </div>
+                            <div class="stats-chart-container">
+                                <canvas id="rarity-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for adding/editing players -->
+    <div class="modal" id="player-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="player-modal-title">Add New Player</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="player-form">
+                    <div class="form-group">
+                        <label for="player-username">Username</label>
+                        <input type="text" id="player-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="player-email">Email</label>
+                        <input type="email" id="player-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="player-level">Level</label>
+                        <input type="number" id="player-level" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="player-status">Status</label>
+                        <select id="player-status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Suspended</option>
+                            <option value="banned">Banned</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for adding/editing items -->
+    <div class="modal" id="item-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="item-modal-title">Add New Item</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="item-form">
+                    <div class="form-group">
+                        <label for="item-name">Item Name</label>
+                        <input type="text" id="item-name" required>
+                    </div>                    <div class="form-group">
+                        <label for="item-category">Category</label>
+                        <select id="item-category">
+                            <option value="furniture">Furniture</option>
+                            <option value="equipment">Equipment</option>
+                            <option value="consumable">Consumable</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="toy">Toy</option>
+                            <option value="grooming">Grooming</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-rarity">Rarity</label>
+                        <select id="item-rarity">
+                            <option value="common">Common</option>
+                            <option value="uncommon">Uncommon</option>
+                            <option value="rare">Rare</option>
+                            <option value="epic">Epic</option>
+                            <option value="legendary">Legendary</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-value">Value</label>
+                        <input type="number" id="item-value" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-owner">Owner ID</label>
+                        <input type="number" id="item-owner" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
 </html>
